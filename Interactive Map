@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Interactive Floor Plan</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f8f8f8;
+  }
+
+  .floor-plan {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: 30px auto;
+  }
+
+  .floor-plan-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Fixed photo markers */
+  .photo-marker {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    border: 2px solid white;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    background: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,.3);
+    transition: transform .2s;
+  }
+
+  .photo-marker:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+
+  .photo-marker img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  /* Enlarged image overlay */
+  .image-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 25px;
+    box-sizing: border-box;
+  }
+
+  .image-overlay.active {
+    display: flex;
+  }
+
+  .enlarged-photo {
+    max-width: 95%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 5px;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    font-size: 28px;
+    cursor: pointer;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="floor-plan">
+
+  <!-- Main floor plan -->
+  <img
+    src="floorplan.jpg"
+    class="floor-plan-image"
+    alt="Property floor plan"
+  >
+
+  <!-- Family Room -->
+  <button class="photo-marker"
+    style="left: 50%; top: 18%;"
+    onclick="openPhoto('family-room.jpg')"
+    aria-label="View family room">
+    <img src="family-room.jpg" alt="">
+  </button>
+
+  <!-- Dining Room -->
+  <button class="photo-marker"
+    style="left: 53%; top: 42%;"
+    onclick="openPhoto('dining-room.jpg')"
+    aria-label="View dining room">
+    <img src="dining-room.jpg" alt="">
+  </button>
+
+  <!-- Kitchen -->
+  <button class="photo-marker"
+    style="left: 55%; top: 62%;"
+    onclick="openPhoto('kitchen.jpg')"
+    aria-label="View kitchen">
+    <img src="kitchen.jpg" alt="">
+  </button>
+
+  <!-- Living Room -->
+  <button class="photo-marker"
+    style="left: 50%; top: 88%;"
+    onclick="openPhoto('living-room.jpg')"
+    aria-label="View living room">
+    <img src="living-room.jpg" alt="">
+  </button>
+
+</div>
+
+<!-- Enlarged photo popup -->
+<div class="image-overlay" id="imageOverlay"
+     onclick="closePhoto()">
+
+  <button class="close-button"
+    onclick="closePhoto()"
+    aria-label="Close photo">×</button>
+
+  <img class="enlarged-photo"
+       id="enlargedPhoto"
+       alt="Enlarged property photo"
+       onclick="event.stopPropagation()">
+</div>
+
+<script>
+  function openPhoto(imageURL) {
+    document.getElementById("enlargedPhoto").src = imageURL;
+    document.getElementById("imageOverlay").classList.add("active");
+  }
+
+  function closePhoto() {
+    document.getElementById("imageOverlay").classList.remove("active");
+  }
+
+  document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+      closePhoto();
+    }
+  });
+</script>
+
+</body>
+</html>
